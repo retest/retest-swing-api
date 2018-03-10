@@ -1,0 +1,199 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.retest</groupId>
+	<artifactId>retest-swing-api</artifactId>
+	<version>0.9.0</version>
+	<packaging>pom</packaging>
+
+	<name>retest Swing API</name>
+    <description>Public API for custom Java Swing components.</description>
+	<url>https://retest.de/</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.resources.sourceEncoding>UTF-8</project.resources.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
+	<prerequisites>
+		<maven>3.2</maven>
+	</prerequisites>
+
+	<licenses>
+		<license>
+			<name>Copyright © 2017 ReTest GmbH. All rights reserved.</name>
+			<url>file:///dev/null</url>
+		</license>
+	</licenses>
+
+	<organization>
+		<name>ReTest GmbH</name>
+		<url>https://retest.de/</url>
+	</organization>
+
+	<developers>
+		<developer>
+			<id>roessler</id>
+			<name>Dr. Jeremias Rößler</name>
+			<email>jeremias.roessler@retest.de</email>
+		</developer>
+		<developer>
+			<id>kraus</id>
+			<name>Daniel Kraus</name>
+			<email>daniel.kraus@retest.de</email>
+		</developer>
+		<developer>
+			<id>vietz</id>
+			<name>Martin Vietz</name>
+			<email>martin.vietz@retest.de</email>
+		</developer>
+		<developer>
+			<id>dillmann</id>
+			<name>Johannes Dillmann</name>
+			<email>johannes.dillmann@retest.de</email>
+		</developer>
+	</developers>
+
+	<dependencyManagement>
+		<dependencies>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<!-- place plugins with versions only here -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<version>3.0.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.9.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>buildnumber-maven-plugin</artifactId>
+					<version>1.4</version>
+				</plugin>
+
+				<!-- place plugins with global configurations here -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.3</version>
+					<configuration>
+						<verbose>true</verbose>
+						<fork>true</fork>
+						<executable>${JAVA_1_6_HOME}/bin/javac</executable>
+						<compilerVersion>1.6</compilerVersion>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>2.6</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							</manifest>
+							<manifestEntries>
+								<Built-By>${developer.name}</Built-By>
+								<SCM-Revision>${buildNumber}</SCM-Revision>
+								<SCM-Branch>${scmBranch}</SCM-Branch>
+							</manifestEntries>
+						</archive>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>2.2</version>
+					<configuration>
+						<archive>
+							<manifest>
+								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							</manifest>
+							<manifestEntries>
+								<Built-By>${developer.name}</Built-By>
+								<SCM-Revision>${buildNumber}</SCM-Revision>
+								<SCM-Branch>${scmBranch}</SCM-Branch>
+							</manifestEntries>
+						</archive>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.5</version>
+					<configuration>
+						<autoVersionSubmodules>true</autoVersionSubmodules>
+						<goals>deploy</goals>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>external.atlassian.jgitflow</groupId>
+					<artifactId>jgitflow-maven-plugin</artifactId>
+					<version>1.0-m5.1</version>
+					<configuration>
+						<suppressFastForward>true</suppressFastForward>
+						<!-- stay in sync -->
+						<pushReleases>true</pushReleases>
+						<pushHotfixes>true</pushHotfixes>
+						<pullDevelop>true</pullDevelop>
+						<pullMaster>true</pullMaster>
+					</configuration>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<!-- place plugins with global execution here -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>validate</phase>
+						<goals>
+							<goal>create</goal>
+						</goals>
+						<configuration>
+							<getRevisionOnlyOnce>true</getRevisionOnlyOnce>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>nexus-retest</id>
+			<url>https://nexus.retest.org/repository/retest/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus-retest</id>
+			<url>https://nexus.retest.org/repository/retest-snapshot/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<scm>
+		<connection>scm:git:https://github.com/retest/retest-swing-api.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com/retest/retest-swing-api.git</developerConnection>
+		<url>https://github.com/retest/retest-swing-api/</url>
+		<tag>parent-pom-0.9.0</tag>
+	</scm>
+
+</project>
