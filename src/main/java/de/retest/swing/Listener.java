@@ -1,4 +1,4 @@
-package de.retest.ui;
+package de.retest.swing;
 
 import java.awt.Component;
 

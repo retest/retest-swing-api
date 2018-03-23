@@ -1,6 +1,7 @@
-package de.retest.ui;
+package de.retest.swing;
 
 import java.util.Map;
+import java.util.Set;
 
 public interface ComponentPeer {
 
@@ -8,5 +9,5 @@ public interface ComponentPeer {
 
 	Map<String, String> getAttributes();
 
-	// TODO How to implement "getPossibleActions" over classloader boundaries?
+	Set<Action> getPossibleActions();
 }
